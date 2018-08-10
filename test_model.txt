@@ -1,0 +1,55 @@
+labels   prediction 
+sil	sil
+z	z
+eh	ih
+f	bmp
+ow	ow
+bmp	bmp
+eh	ah
+h	h
+ah	eh
+f	f
+sil	sil
+ow	aa
+ow	aa
+ih	ih
+d	d
+h	h
+sil	sil
+d	d
+ih	ih
+th	w
+ah	ay
+d	bmp
+ih	ah
+ih	ih
+sil	ih
+d	bmp
+ay	ay
+sil	sil
+sil	sil
+aa	aa
+aa	aa
+bmp	d
+d	d
+eh	ah
+eh	ah
+sil	sil
+z	z
+d	z
+sil	sil
+----------------------------------------------------
+aa	: success rate 1.0	,success to shorten labels set 1.0	from 2 trials 
+eh	: success rate 0.0	,success to shorten labels set 0.0	from 4 trials 
+f	: success rate 0.5	,success to shorten labels set 0.5	from 2 trials 
+h	: success rate 1.0	,success to shorten labels set 1.0	from 2 trials 
+d	: success rate 0.5	,success to shorten labels set 0.5	from 6 trials 
+ih	: success rate 0.75	,success to shorten labels set 0.75	from 4 trials 
+bmp	: success rate 0.5	,success to shorten labels set 0.5	from 2 trials 
+th	: success rate 0.0	,success to shorten labels set 0.0	from 1 trials 
+ah	: success rate 0.0	,success to shorten labels set 0.0	from 2 trials 
+ow	: success rate 0.333333333333	,success to shorten labels set 0.333333333333	from 3 trials 
+z	: success rate 1.0	,success to shorten labels set 1.0	from 2 trials 
+ay	: success rate 1.0	,success to shorten labels set 1.0	from 1 trials 
+sil	: success rate 0.875	,success to shorten labels set 0.875	from 8 trials 
+average succuess rate 0.573717948718	 average success rate of smart labels 0.573717948718
