@@ -2,7 +2,7 @@ from keras.models import load_model
 model_file_name = "model"
 import h5py
 from PhonesSet import PhonesSet
-from DataSet import DataSet
+from TimitDataSet import TimitDataSet
 
 input_vec_size = 9
 num_of_features = 39
@@ -13,7 +13,7 @@ inputs_file_name = "inputs_vecs_to_orig.h5"
 inputs_dataset_name = "inputs"
 labels_dataset_name = "labels"
 if not LOAD_FROM_FILE:
-    buckeye_dataset = DataSet("C:\Users\user\Documents\quick",input_vec_size)#/home/bokobzt/Datasets/buckeye/short",#""/home/bokobzt/Datasets/buckeye/onespeaker",input_vec_size)#"C:\Users\user\Documents\quick","C:\Users\user\Documents\\test_buckeye"///home/bokobzt/Datasets/buckeye/speech
+    buckeye_dataset = TimitDataSet("C:\Users\user\Documents\quick", input_vec_size)#/home/bokobzt/Datasets/buckeye/short",#""/home/bokobzt/Datasets/buckeye/onespeaker",input_vec_size)#"C:\Users\user\Documents\quick","C:\Users\user\Documents\\test_buckeye"///home/bokobzt/Datasets/buckeye/speech
     #C:\Users\user\Documents\10speakers
     xVal,yFit = buckeye_dataset.get_speakers_data(num_of_speakers=41)
 

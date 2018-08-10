@@ -1,8 +1,10 @@
 import numpy as np
-from DataSet import DataSet
+from TimitDataSet import TimitDataSet
 from PhonesSet import PhonesSet
+import model_config
 import os
 max_data_len_for_writing = 500000
+
 
 def get_many_to_one_labels(labels,number_of_labels):
     new_labels = []
@@ -14,9 +16,11 @@ def get_many_to_one_labels(labels,number_of_labels):
         new_labels += [new_label]#[[most_common(tags_list)]]
     return np.asarray(new_labels)
 
+
 def is_labels_valid(labels):
     for label in labels:
         assert sum(label) == 1,"invalid label : "+ str(labels)
+
 
 def most_common(lst,num_of_labels):
     sum_list = [sum(x) for x in zip(*lst)]
@@ -25,6 +29,7 @@ def most_common(lst,num_of_labels):
     label_vector[max_index_value] = 1
     return label_vector
 
+
 def get_many_to_one_inputes(inputs):
     flatten_inputs = []
     for input in inputs:
@@ -32,6 +37,7 @@ def get_many_to_one_inputes(inputs):
         flatten_inputs +=[flat_list]
 
     return flatten_inputs
+
 
 def save_data_to_files(base_file_name,data):
     file_index = 0
@@ -68,13 +74,38 @@ def convert_to_cnn_inputs_and_labels(inputs,labels):
     input_len = len(inputs_transposed[0])
     return inputs_transposed,labels_many_to_one,input_len,num_of_features
 
+
 def load_data_for_validation(validation_path, input_vec_size):
-    dataset = DataSet(validation_path, input_vec_size, overlap=0)
+    dataset = TimitDataSet(validation_path, input_vec_size, overlap=0)
     X,Y = dataset.get_dirs_data(8)
 
     return X,Y
 
-def print_compare(labels, predictions):
+
+def load_training_data(input_dir_path):
+    labels_file_name = model_config.labels_file_name
+    inputs_file_name = model_config.inputs_file_name
+
+    timit_dataset = TimitDataSet(input_dir_path, model_config.input_vec_size, overlap=model_config.inputes_overlap)
+
+    if not model_config.load_data_from_file:
+        inputs, labels = timit_dataset.get_dirs_data(num_of_dirs=41)
+
+        # NOTE : save loaded data to files
+        save_data_to_files(inputs_file_name, inputs)
+        save_data_to_files(labels_file_name, labels)
+        print("finished loading data, saved to files")
+    else:
+        # NOTE : load data from files
+        inputs = load_data_from_files(inputs_file_name)
+        labels = load_data_from_files(labels_file_name)
+
+        print("finished loading data from files")
+        print("total num of inputes : " + str(len(inputs)))
+    return inputs,labels
+
+
+def print_compare(compare_file_path, labels, predictions):
     accuracy_per_label = {}
 
     assert (len(labels) == len(predictions))
@@ -105,7 +136,5 @@ def print_compare(labels, predictions):
 
     results_str+= 'average succuess rate {}\t average success rate of smart labels {}\n'.format(average_success_rate/len(accuracy_per_label.keys()),smart_mapping_average_success_rate/len(accuracy_per_label.keys()))
 
-
-
-    with open('test_model.txt', 'w') as comparison_file:
+    with open(compare_file_path, 'w') as comparison_file:
         comparison_file.write(results_str)

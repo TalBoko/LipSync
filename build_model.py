@@ -1,6 +1,6 @@
 from model import MyModel
 import Utils
-from DataSet import DataSet
+from TimitDataSet import TimitDataSet
 from PhonesSet import PhonesSet
 import os
 max_data_len_for_writing = 500000
@@ -29,7 +29,7 @@ else:
 if config.learn_model:
     if not load_from_file:
             #os.environ["THEANO_FLAGS"] = "mode=FAST_RUN,device=cuda,floatX=float32"
-        buckeye_dataset = DataSet(dir_path, input_vec_size,overlap=config.inputes_overlap)#/home/bokobzt/Datasets/buckeye/short",#""/home/bokobzt/Datasets/buckeye/onespeaker",input_vec_size)#"C:\Users\user\Documents\quick","C:\Users\user\Documents\\test_buckeye"///home/bokobzt/Datasets/buckeye/speech
+        buckeye_dataset = TimitDataSet(dir_path, input_vec_size, overlap=config.inputes_overlap)#/home/bokobzt/Datasets/buckeye/short",#""/home/bokobzt/Datasets/buckeye/onespeaker",input_vec_size)#"C:\Users\user\Documents\quick","C:\Users\user\Documents\\test_buckeye"///home/bokobzt/Datasets/buckeye/speech
         #C:\Users\user\Documents\10speakers
         inputs,labels = buckeye_dataset.get_dirs_data(num_of_dirs=41)
 

@@ -16,6 +16,4 @@ path_for_validation_windows  = 'C:\\Users\\user\\Desktop\\timit-code\\data'
 path_for_validation_linux  = '/data/bokobta/Datasets/timit/test/'
 learn_model = False
 load_model_and_validate = True
-continue_learning = False
 file_name = 'model'
-continue_training = False
