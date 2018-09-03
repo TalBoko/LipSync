@@ -21,4 +21,6 @@ model_file = model_config.model_file_name
 model.build_model("CONV1", [], [], weights_path=model_file)
 
 predictions = model.predict(inputs_transpose)
-Utils.print_compare('test_model.txt', labels_many_to_one, predictions)
+results_path = 'test_model.txt'
+Utils.print_compare(results_path, labels_many_to_one, predictions)
+print('finished validation successfully, results can be found in {}'.format(results_path))

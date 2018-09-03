@@ -87,15 +87,20 @@ class MyModel:
         self._model.compile(loss='categorical_crossentropy', optimizer=optimizer, metrics=["accuracy"])
         return self._model
 
-    def fit(self, x_train, y_train, model_path, early_stopping_patience, val_percentage, batch_size, num_epochs):
+    def fit(self, x_train, y_train, model_path, early_stopping_patience, val_percentage, batch_size, num_epochs, validation_data=None):
 
         # preparing the callbacks
         check_pointer = callbacks.ModelCheckpoint(filepath=model_path, verbose=0, save_best_only=True)
         early_stop = callbacks.EarlyStopping(patience=early_stopping_patience, verbose=1)
 
         # training
-        self._model.fit(x_train, y_train, validation_split=val_percentage, batch_size=batch_size, epochs=num_epochs,
-                    callbacks = [check_pointer, early_stop], shuffle=False)#callbacks=[check_pointer, early_stop],
+        if validation_data is None:
+            self._model.fit(x_train, y_train, validation_split=val_percentage, batch_size=batch_size, epochs=num_epochs,
+                    callbacks=[check_pointer, early_stop], shuffle=False)#callbacks=[check_pointer, early_stop],
+        else:
+            self._model.fit(x_train, y_train, validation_data=validation_data, batch_size=batch_size, epochs=num_epochs,
+                            callbacks=[check_pointer, early_stop],
+                            shuffle=False)  # callbacks=[check_pointer, early_stop],
 
     def evaluate(self, x_test, y_test):
         outs = self._model.evaluate(x_test, y_test, verbose=1)

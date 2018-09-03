@@ -2,14 +2,22 @@ import glob
 import buckeye_client
 import timit_client
 from PhonesSet import *
+import model_config
 
 
 class TimitDataSet:
     def __init__(self, base_dir_path,input_size,overlap=0):
+        '''
+        :param base_dir_path: corpus main folder
+        :param input_size: how many frames in each input vector
+        :param overlap: overlap size between input vectors
+        '''
         self.base_dir_path = base_dir_path
         self.dirs_dirs_list = glob.glob(self.base_dir_path + "/*/")
+        # DEBUG
+        print (str(self.dirs_dirs_list))
         print self.dirs_dirs_list
-        self.next_dir_index= 0
+        self.next_dir_index = 0
         self.bulk_index = 0
         self.num_of_features = 39
         self.input_size = input_size
@@ -30,33 +38,28 @@ class TimitDataSet:
 
         return X,Y
 
-
     def load_next_dir_data(self):
-        '''
-        :param input_size: how many mfcc in each input vector
-        :param overlap: overlap size between inputs
-        :return: x_inputs,y_labels
-        '''
-        inputs = []
-        outputs = []
+
+        input_vectors = []
+        label_vectors = []
         print("len(self.dirs_dirs_list) = "+str(len(self.dirs_dirs_list)))
-        if self.next_dir_index < len(self.dirs_dirs_list) :
-            if config.dataset == 'buckeye':
+        if self.next_dir_index < len(self.dirs_dirs_list):
+            if model_config.dataset == 'buckeye':
                 print 'working on buckeye dataset'
                 client = buckeye_client.Speaker(self.dirs_dirs_list[self.next_dir_index])
-            elif config.dataset == 'timit':
+            elif model_config.dataset == 'timit':
                 print 'working on timit dataset'
                 client = timit_client.Timit(self.dirs_dirs_list[self.next_dir_index])
 
-            features, labels = client.get_corpus()
+            inputs, labels = client.get_corpus()
             self.next_dir_index += 1
-            print("frames " + str(len(features)))
-            num_of_features = len(features)
-            for i in range(0,num_of_features-self.input_size+1,self.input_size-self.overlap):
-                inputs += [features[i:i + self.input_size]]
-                outputs += [self.get_output_vector(labels[i:i + self.input_size])]
+            print("frames " + str(len(inputs)))
+            num_of_inputs = len(inputs)
+            for i in range(0, num_of_inputs-self.input_size+1, self.input_size-self.overlap):
+                input_vectors += [inputs[i:i + self.input_size]]
+                label_vectors += [self.get_output_vector(labels[i:i + self.input_size])]
 
-        return np.asarray(inputs),np.asarray(outputs)
+        return np.asarray(input_vectors),np.asarray(label_vectors)
 
     def get_output_vector(self, labels_list):
         assert len(labels_list) == self.input_size

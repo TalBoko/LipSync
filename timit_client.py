@@ -3,7 +3,8 @@ import fnmatch
 from WavReader import *
 from PhonesSet import *
 import logging
-import config
+import model_config
+
 
 class Timit:
     def __init__(self,dir_path):
@@ -35,18 +36,25 @@ class Timit:
 
         self.inputs= []
         self.labels = []
-        for speker_folder in self.files_by_speaker_folder.keys():
 
-            for wav_path,phone_path in self.files_by_speaker_folder[speker_folder]:
+        for speaker_folder in self.files_by_speaker_folder.keys():
+            speaker_inputs = []
+            speaker_labels = []
+            for wav_path, phone_path in self.files_by_speaker_folder[speaker_folder]:
                 try:
-                    inputs,labels =self.generate_labeled_data_from_track(wav_path,phone_path)
-                    normalized_inputs = self.normalize_mfcc_data(inputs)
-                    self.inputs.extend(normalized_inputs)
-                    self.labels.extend(labels)
+                    inputs, labels = self.generate_labeled_data_from_track(wav_path,phone_path)
+
+                    speaker_inputs.extend(inputs)
+                    speaker_labels.extend(labels)
+
                 except Exception as ex:
                     print("failed to generate data from file " + wav_path)
                     print (str(ex))
                     pass
+            # NOTE: normalize data per speaker folder
+            normalized_inputs = Timit.normalize_features(speaker_inputs)
+            self.inputs.extend(normalized_inputs)
+            self.labels.extend(speaker_labels)
 
         return self.inputs, self.labels
 
@@ -58,39 +66,40 @@ class Timit:
             labels_data = phone_file.read()
         labels_list = labels_data.split('\n')
 
-        #load audio featurs
-        feature_type_str = config.feature_type
-        mfcc_type = Mfcc_Type[feature_type_str]
+        # NOTE: load audio features
+        feature_type_str = model_config.feature_type
+        features_type = Feature_Type[feature_type_str]
 
-        wav_reader = WavReader(16000, frame_len=0.025, shift_len=0.01, mfcc_type=mfcc_type)
-        track_mfccs = wav_reader.get_all_frames_mfcc(wav_path)
-        #if len(labels_list) == len(track_mfccs):
-        #TODO - verfiy we are ignoring the right frames
+        wav_reader = WavReader(16000, frame_len=0.025, shift_len=0.01, mfcc_type=features_type)
+        track_mfccs = wav_reader.get_all_frame_features(wav_path, model_config.num_mels)
+
+        # TODO - verify we ignore the right frames
         for i in range(len(labels_list)):
             phoneme_label = PhonesSet.get_mapping(labels_list[i])
             if phoneme_label != PhonesSet.DEFAULT:
                 labels.append(phoneme_label)
                 inputs.append(track_mfccs[i])
-        return inputs,labels
+            else:
+                print "skipped on unknown frame: {}".format(labels_list[i])
+        return inputs, labels
 
-
-    def calc_normalization_properties(self,inputs):
+    @staticmethod
+    def calc_normalization_properties(inputs):
         window_size = 10000
         sum_features_list = np.sum(inputs[:window_size], axis=0)
         features_average = sum_features_list / window_size
         std_list = np.std(inputs[:window_size], axis=0)
         return features_average,std_list
 
-
-    def normalize_mfcc_data(self,inputs):
-        averaeg_list , std_list =self.calc_normalization_properties(inputs)
-        normalized_inputs = inputs - averaeg_list
+    @staticmethod
+    def normalize_features(inputs):
+        average_list, std_list = Timit.calc_normalization_properties(inputs)
+        normalized_inputs = inputs - average_list
         normalized_inputs = normalized_inputs / std_list
-        return normalized_inputs  # load wave frames and extract mfcc features
-        ##################
+        return normalized_inputs
 
 
-#TODO - add config selection for timit/buckeye, copy files to run test on windows
+# TODO - add config selection for timit/buckeye, copy files to run test on windows
 # change in Dataset the use of the correct client
-# should we normiles every sub folder ? - sounds right
+
 #verfiy normalization required in different featues types.

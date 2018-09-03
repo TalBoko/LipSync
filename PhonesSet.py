@@ -1,4 +1,4 @@
-import config
+import model_config
 import numpy as np
 from enum import Enum
 
@@ -9,9 +9,9 @@ class Lables_type(Enum):
 
 
 class PhonesSet(object):
-    mapping_type = Lables_type[config.mapping_type]
+    mapping_type = Lables_type[model_config.mapping_type]
 
-    DATASET = config.dataset
+    DATASET = model_config.dataset
     DEFAULT = 'unknown'
     PHONES_MAPPING = {'ae': 'ah', 'ah': 'ah', 'ax': 'ah', #'ahn':'ah', 'ihn': 'ih',
                       'aa': 'aa', 'ao': 'ao', 'ey': 'eh', 'eh': 'eh',
@@ -54,7 +54,7 @@ class PhonesSet(object):
 
     TIMTIT_INDEX_ORIG = {"aa":0,"ae":1,"ah":2,"ao":3,"aw":4,"ax":5,"axh":6,"axr":7,"ay":8,"b":9,"bcl":10,"ch":11,"d":12,"dcl":13,"dh":14,"dx":15,"eh":16,"el":17,"em":18,"en":19,"eng":20,"epi":21,"er":22,"ey":23,"f":24,"g":25,"gcl":26,"h#":27,"hh":28,"hv":29,"ih":30,"ix":31,"iy":32,"jh":33,"k":34,"kcl":35,"l":36,"m":37,"n":38,"ng":39,"nx":40,"ow":41,"oy":42,"p":43,"pau":44,"pcl":45,"q":46,"r":47,"s":48,"sh":49,"t":50,"tcl":51,"th":52,"uh":53,"uw":54,"ux":55,"v":56,"w":57,"y":58,"z":59,"zh":60}
 
-    TIMIT_MAPPING_SHORTEN = {'em': 'm', 'ch': 'ch', 'ix': 'ih', 'tcl': 'pau', 'ae': 'ae', 'iy': 'iy', 'th': 'th', 'axr': 'er', 'pcl': 'pau', 'dh': 'dh', 'kcl': 'pau', 'hv': 'hh', 'hh': 'hh', 'dx': 'dx', 'd': 'd', 'b': 'b', 'ux': 'uw', 'f': 'f', 'uw': 'uw', 'l': 'l', 'n': 'n', 'p': 'p', 'r': 'r', 'uh': 'uh', 'v': 'v', 'z': 'z', 'aa': 'aa', 'el': 'l', 'en': 'n', 'zh': 'sh', 'eh': 'eh', 'ah': 'ah', 'ao': 'aa', 'ih': 'ih', 'ey': 'ey', 'aw': 'aw', 'h#': 'pau', 'ay': 'ay', 'ax': 'ah', 'er': 'er', 'pau': 'pau', 'eng': 'ng', 'gcl': 'pau', 'ng': 'ng', 'nx': 'n', 't': 't', 'dcl': 'pau', 'oy': 'oy', 'ow': 'ow', 'jh': 'jh', 'bcl': 'pau', 'g': 'g', 'k': 'k', 'm': 'm', 'q': 'pau', 's': 's', 'sh': 'sh', 'w': 'w', 'epi': 'pau', 'y': 'y', 'axh': 'ah'}
+    TIMIT_MAPPING_SHORTEN = {'em': 'm', 'ch': 'ch', 'ix': 'ih', 'tcl': 'pau', 'ae': 'ae', 'iy': 'iy', 'th': 'th', 'axr': 'er', 'pcl': 'pau', 'dh': 'dh', 'kcl': 'pau', 'hv': 'hh', 'hh': 'hh', 'dx': 'dx', 'd': 'd', 'b': 'b', 'ux': 'uw', 'f': 'f', 'uw': 'uw', 'l': 'l', 'n': 'n', 'p': 'p', 'r': 'r', 'uh': 'uh', 'v': 'v', 'z': 'z', 'aa': 'aa', 'el': 'l', 'en': 'n', 'zh': 'sh', 'eh': 'eh', 'ah': 'ah', 'ao': 'aa', 'ih': 'ih', 'ey': 'ey', 'aw': 'aw', 'h#': 'pau', 'ay': 'ay', 'ax': 'ah', 'er': 'er', 'pau': 'pau', 'eng': 'ng', 'gcl': 'pau', 'ng': 'ng', 'nx': 'n', 't': 't', 'dcl': 'pau', 'oy': 'oy', 'ow': 'ow', 'jh': 'jh', 'bcl': 'pau', 'g': 'g', 'k': 'k', 'm': 'm', 'q': 'pau', 's': 's', 'sh': 'sh', 'w': 'w', 'epi': 'pau', 'y': 'y', 'axh': 'ah', 'ax-h': 'ah'}
 
     TIMIT_INDEX_SHORTEN = {'aa': 0, 'iy': 1, 'ch': 2, 'ae': 3, 'eh': 4, 'ah': 5, 'ih': 6, 'ey': 7, 'aw': 8, 'ay': 9, 'er': 10, 'pau': 11, 'ng': 12, 'r': 32, 'th': 14, 'uh': 33, 'w': 34, 'dh': 17, 'y': 36, 'hh': 19, 'jh': 20, 'dx': 21, 'b': 22, 'd': 23, 'g': 24, 'f': 25, 'uw': 26, 'm': 27, 'l': 28, 'n': 29, 'p': 30, 's': 31, 'sh': 13, 't': 15, 'oy': 16, 'v': 35, 'ow': 18, 'z': 37, 'k': 38}
 

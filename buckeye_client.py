@@ -4,11 +4,13 @@ import os
 from WavReader import *
 from PhonesSet import *
 import logging
-import config
+import model_config
 
 FRAME_SIZE=400
 SHIFT_SIZE=160
 FILES_RATE = 16000
+
+
 class Phone(object):
     """A phone entry in the Buckeye Corpus.
 
@@ -76,7 +78,6 @@ class Speaker:
         self.num_skipped_files = 0
         self.config_logger()
 
-
     def config_logger(self):
         # create logger
         logging.basicConfig(filename='logger.log', level=logging.DEBUG)
@@ -114,15 +115,15 @@ class Speaker:
         ##################
 
         shift_len = 0.01
-        feature_type_str = config.feature_type
-        mfcc_type = Mfcc_Type[feature_type_str ]
-        if mfcc_type == Mfcc_Type.REAL_TIME:
+        feature_type_str = model_config.feature_type
+        mfcc_type = Feature_Type[feature_type_str]
+        if mfcc_type == Feature_Type.REAL_TIME:
             frame_len = 0.025
         else:
             frame_len=0.032
 
         wav_reader = WavReader(16000, frame_len=frame_len, shift_len=shift_len,mfcc_type=mfcc_type)
-        track_mfccs = wav_reader.get_all_frames_mfcc(wave_file_path)
+        track_mfccs = wav_reader.get_all_frame_features(wave_file_path, model_config.num_mels)
         ##################
 
         is_first_data=True
