@@ -31,26 +31,24 @@ def send_visemes_to_smartbody(model, data_list):
     last_prediction = None
     stomp_client = StompClient()
     end = time.time()
+    
     print('intialization took  {}'.format(end - start))
-    #time.sleep(0.02)
+  
     skipped = False
     for data_sample in data_list:
         start = time.time()
-        time.sleep(0.0865)#0.09
+        time.sleep(0.0865)
 
         prediction = model.predict(np.asarray([data_sample]))
         pred_str = PhonesSet.from_vector_to_label(prediction)
 
-        if pred_str != last_prediction or pred_str == 'sil' :#or skipped:
+        if pred_str != last_prediction or pred_str == 'sil':
             last_prediction = pred_str
             stomp_client.send_viseme_command(pred_str)
-            skipped = False
-        else:
-            #time.sleep(0.0008)
-            skipped = True
+              
         end = time.time()
         duration = end - start
         if duration < 0.09:
             time.sleep(0.09-duration)
 
-    print('test')
+    print('finished sending visemes')
