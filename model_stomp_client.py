@@ -34,7 +34,6 @@ def send_visemes_to_smartbody(model, data_list):
     
     print('intialization took  {}'.format(end - start))
   
-    skipped = False
     for data_sample in data_list:
         start = time.time()
         time.sleep(0.0865)
